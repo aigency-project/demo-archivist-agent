@@ -1,0 +1,59 @@
+services:
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+      - ./../containers_base/container_base_ollama:/init-scripts
+    environment:
+      - OLLAMA_NUM_PARALLEL=2
+      - OLLAMA_MAX_LOADED_MODELS=2
+      # Disable GPU para usar solo CPU
+      - CUDA_VISIBLE_DEVICES=-1
+      - OLLAMA_MODELS=llama3.2:1b
+    env_file:
+      - .env
+    entrypoint: ["/bin/sh"]
+    command: ["/init-scripts/start.sh"]
+    restart: unless-stopped
+    networks:
+      - agent_network
+  archivist-agent:
+    depends_on:
+      - ollama
+    build:
+      context: ./../containers_base/container_base_agent
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8080"
+    volumes:
+      - ./agent:/app/code/agent
+      - ./../../../aigency:/app/code/aigency
+    env_file:
+      - .env
+    restart: unless-stopped
+    command: >
+      sh -c "pip install watchdog && \
+             export PYTHONPATH=/app/code:/app/code/agent && \
+             watchmedo auto-restart --directory=/app/code --patterns='*.py;*.yaml;*.yml' --recursive -- python /app/code/agent/__main__.py"
+    networks:
+      - agent_network
+
+  ## Build from here https://github.com/a2aproject/a2a-inspector.git
+  a2ainspector:
+    image: a2a-inspector
+    ports:
+      - "6007:8080"
+    networks:
+      - agent_network
+
+volumes:
+  ollama_data:
+    name: ollama_data
+
+networks:
+  agent_network:
+    driver: bridge

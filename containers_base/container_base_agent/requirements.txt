@@ -1,0 +1,11 @@
+aigency>=0.0.1
+watchdog
+langchain-community
+langchain-huggingface
+pymupdf
+chromadb
+huggingface_hub
+sentence-transformers
+unstructured
+llama-index
+llama-index-vector-stores-chroma
