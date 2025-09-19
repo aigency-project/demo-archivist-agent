@@ -9,3 +9,4 @@ sentence-transformers
 unstructured
 llama-index
 llama-index-vector-stores-chroma
+langchain_ollama
