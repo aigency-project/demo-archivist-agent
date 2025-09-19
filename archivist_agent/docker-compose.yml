@@ -13,7 +13,7 @@ services:
       - OLLAMA_MAX_LOADED_MODELS=2
       # Disable GPU para usar solo CPU
       - CUDA_VISIBLE_DEVICES=-1
-      - OLLAMA_MODELS=llama3.2:1b
+      - OLLAMA_MODELS=llama3.2
     env_file:
       - .env
     entrypoint: ["/bin/sh"]

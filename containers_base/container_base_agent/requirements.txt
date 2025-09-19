@@ -10,3 +10,4 @@ unstructured
 llama-index
 llama-index-vector-stores-chroma
 langchain_ollama
+llama-index-embeddings-huggingface

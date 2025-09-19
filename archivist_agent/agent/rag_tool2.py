@@ -11,6 +11,7 @@ llm_model = "llama3.2:1b"
 chroma_client = chromadb.PersistentClient(path=os.path.join(os.getcwd(), "chroma_db"))
 
 # Define a custom embedding function for ChromaDB using Ollama
+# Define a custom embedding function for ChromaDB using Ollama
 class ChromaDBEmbeddingFunction:
     """
     Custom embedding function for ChromaDB using embeddings from Ollama.
@@ -18,10 +19,22 @@ class ChromaDBEmbeddingFunction:
     def __init__(self, langchain_embeddings):
         self.langchain_embeddings = langchain_embeddings
 
+    def name(self):
+        return "OllamaEmbeddingFunction"
+
+    # This method is used for embedding documents
     def __call__(self, input):
-        # Ensure the input is in a list format for processing
-        if isinstance(input, str):
-            input = [input]
+        # ChromaDB expects this method to handle both single strings and lists.
+        
+        return self.langchain_embeddings.embed_documents(input)
+
+    # This method is used for embedding queries.
+    # It must handle the input from ChromaDB, which is a single string.
+    def embed_query(self, input):
+        # LangChain's embed_documents can handle a list,
+        # but the ChromaDB query method passes a single string here.
+        # We must wrap it in a list to use the embed_documents method.
+        # The OllamaEmbeddings class will then correctly handle the list.
         return self.langchain_embeddings.embed_documents(input)
 
 # Initialize the embedding function with Ollama embeddings
