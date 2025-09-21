@@ -1,13 +1,21 @@
 aigency>=0.0.1
 watchdog
-langchain-community
-langchain-huggingface
-pymupdf
-chromadb
-huggingface_hub
-sentence-transformers
-unstructured
-llama-index
-llama-index-vector-stores-chroma
-langchain_ollama
-llama-index-embeddings-huggingface
+
+
+# Dependencias simples para herramientas RAG de Google ADK
+
+# Procesamiento de documentos
+PyMuPDF
+numpy>=1.26.0
+scipy>=1.11.0
+
+# Embeddings locales (versiones compatibles con Python 3.12)
+torch>=2.1.0
+transformers>=4.35.0
+sentence-transformers>=2.2.2
+
+
+# Base de datos vectorial
+chromadb>=0.4.0
+
+huggingface_hub>=0.15.1

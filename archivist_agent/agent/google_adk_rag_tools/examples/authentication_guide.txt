@@ -1,0 +1,53 @@
+Google ADK Authentication Configuration Guide
+
+This guide explains how to configure authentication for Google ADK applications.
+
+OAUTH 2.0 SETUP
+===============
+
+Step 1: Create OAuth 2.0 Credentials
+- Go to Google Cloud Console
+- Navigate to APIs & Services > Credentials
+- Click "Create Credentials" > "OAuth 2.0 Client ID"
+- Select application type (Web, Desktop, Mobile)
+- Configure authorized redirect URIs
+
+Step 2: Download Credentials File
+- Download the JSON credentials file
+- Store it securely in your project
+- Never commit credentials to version control
+
+Step 3: Initialize OAuth Flow
+- Use the credentials file to initialize OAuth
+- Handle the authorization flow
+- Store refresh tokens securely
+
+SERVICE ACCOUNT AUTHENTICATION
+==============================
+
+For server-to-server authentication:
+
+1. Create a service account in Google Cloud Console
+2. Generate and download the service account key (JSON)
+3. Set the GOOGLE_APPLICATION_CREDENTIALS environment variable
+4. Use the service account for API calls
+
+SECURITY CONSIDERATIONS
+======================
+
+- Rotate credentials regularly
+- Use least privilege principle
+- Monitor authentication logs
+- Implement proper error handling
+- Use HTTPS for all communications
+
+TROUBLESHOOTING
+==============
+
+Common authentication issues:
+- Invalid credentials: Check file path and format
+- Expired tokens: Implement token refresh logic
+- Insufficient permissions: Review IAM roles
+- Network issues: Check firewall and proxy settings
+
+For more detailed information, refer to the Google Cloud documentation.

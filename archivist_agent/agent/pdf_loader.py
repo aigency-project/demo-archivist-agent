@@ -4,7 +4,13 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.document_loaders import PyMuPDFLoader, UnstructuredPDFLoader
 from langchain_community.vectorstores import Chroma
+from langchain.chains import RetrievalQA
+from transformers import pipeline, AutoTokenizer, AutoModelForCausalLM
+
 from pathlib import Path
+
+embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+generator = pipeline("text-generation", model="gpt2", tokenizer="gpt2")
 
 # Función para cargar los documentos PDF en un directorio
 def load_pdf_documents(pdf_dir: str):
@@ -52,6 +58,22 @@ def get_autodesk_vectorstore(persist_directory: str) -> Chroma:
             "Por favor, ejecute primero el paso de construcción (por ejemplo, usando build_vectorstore)."
         )
 
+def query_rag_system_local(query: str, vectordb: Chroma, k: int = 3):
+    # Recuperador que utiliza los vectores (k = cantidad de documentos a recuperar)
+    retriever = vectordb.as_retriever(search_kwargs={"k": k})
+
+    # Crear el chain de RAG con un modelo generativo local
+    qa_chain = RetrievalQA.from_chain_type(
+        llm=generator,  # Aquí utilizamos el pipeline de Hugging Face directamente
+        retriever=retriever,
+        return_source_documents=True  # Esto es opcional, puedes ver de dónde viene la respuesta
+    )
+
+    # Ejecutar la consulta
+    result = qa_chain(query)
+
+    return result
+
 # Ejemplo de uso
 
 # Directorio donde están los PDFs
@@ -70,5 +92,13 @@ persist_directory = "./persisted_vectorstore"
 try:
     loaded_vectordb = get_autodesk_vectorstore(persist_directory)
     print("Vectorstore cargado exitosamente.")
+    query = "¿Hay casos en fabricas?"
+    result = query_rag_system_local(query, loaded_vectordb)
+    print("🧠 Respuesta generada por el modelo:")
+    print(result["result"])
+    print("\n📄 Documentos fuente:")
+    for doc in result["source_documents"]:
+        print(f"- Fuente: {doc.metadata.get('source', 'desconocido')}")
+        print(f"  Contenido:\n{doc.page_content[:300]}...\n")
 except FileNotFoundError as e:
     print(str(e))

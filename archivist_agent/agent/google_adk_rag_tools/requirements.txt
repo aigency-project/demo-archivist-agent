@@ -1,0 +1,16 @@
+# Dependencias simples para herramientas RAG de Google ADK
+
+# Procesamiento de documentos
+PyMuPDF==1.26.4
+numpy==2.3.3
+scipy==1.16.2
+
+# Embeddings locales (versiones compatibles)
+torch==2.8.0
+transformers==4.56.2
+sentence-transformers==5.1.0
+
+# Base de datos vectorial
+chromadb>=1.1.0
+
+huggingface_hub==0.35.0

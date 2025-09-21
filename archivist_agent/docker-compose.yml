@@ -1,29 +1,29 @@
 services:
 
-  ollama:
-    image: ollama/ollama:latest
-    container_name: ollama
-    ports:
-      - "11434:11434"
-    volumes:
-      - ollama_data:/root/.ollama
-      - ./../containers_base/container_base_ollama:/init-scripts
-    environment:
-      - OLLAMA_NUM_PARALLEL=2
-      - OLLAMA_MAX_LOADED_MODELS=2
-      # Disable GPU para usar solo CPU
-      - CUDA_VISIBLE_DEVICES=-1
-      - OLLAMA_MODELS=llama3.2
-    env_file:
-      - .env
-    entrypoint: ["/bin/sh"]
-    command: ["/init-scripts/start.sh"]
-    restart: unless-stopped
-    networks:
-      - agent_network
+  #ollama:
+  #  image: ollama/ollama:latest
+  #  container_name: ollama
+  #  ports:
+  #    - "11434:11434"
+  #  volumes:
+  #    - ollama_data:/root/.ollama
+  #    - ./../containers_base/container_base_ollama:/init-scripts
+  #  environment:
+  #    - OLLAMA_NUM_PARALLEL=2
+  #    - OLLAMA_MAX_LOADED_MODELS=2
+  #    # Disable GPU para usar solo CPU
+  #    - CUDA_VISIBLE_DEVICES=-1
+  #    - OLLAMA_MODELS=llama3.2
+  #  env_file:
+  #    - .env
+  #  entrypoint: ["/bin/sh"]
+  #  command: ["/init-scripts/start.sh"]
+  #  restart: unless-stopped
+  #  networks:
+  #    - agent_network
   archivist-agent:
-    depends_on:
-      - ollama
+    #depends_on:
+    #  - ollama
     build:
       context: ./../containers_base/container_base_agent
       dockerfile: Dockerfile

@@ -17,10 +17,11 @@ service:
 
 agent:
   model:
-    name: llama3.2:1b
-    provider:
-        name: ollama_chat
-        api_base: http://ollama:11434
+    name: gemini-2.0-flash
+    #name: llama3.2:1b
+    #provider:
+    #    name: ollama_chat
+    #    api_base: http://ollama:11434
 
   instruction: |
     """
@@ -92,11 +93,16 @@ agent:
         - "Generate a report on historical crimes involving corporate espionage at OmniCorp."
 
   tools:
+    #- type: function
+    #  name: archive_access_tool
+    #  description: Provides access to the Agency's Central Knowledge Base (RAG) for searching all historical case files and records.
+    #  module_path: rag_tool
+    #  function_name: retrieve_docs
     - type: function
       name: archive_access_tool
       description: Provides access to the Agency's Central Knowledge Base (RAG) for searching all historical case files and records.
-      module_path: rag_tool
-      function_name: retrieve_docs
+      module_path: google_adk_rag_tools.tools
+      function_name: query_knowledge_base
 
 observability:
   monitoring:
