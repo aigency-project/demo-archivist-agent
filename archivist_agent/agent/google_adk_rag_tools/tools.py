@@ -8,14 +8,9 @@ Todo funciona offline con modelos ligeros.
 import os
 import time
 import logging
+import json
 from pathlib import Path
 from typing import Dict, Any, List
-
-# Decorador para herramientas A2A
-def tool(func):
-    """Decorador simple para herramientas A2A."""
-    func._is_tool = True
-    return func
 
 # Imports simples
 import fitz  # PyMuPDF
@@ -119,13 +114,13 @@ def _chunk_text(text: str, chunk_size: int = 1000, overlap: int = 200) -> List[s
     
     return chunks
 
-@tool
-def add_document_to_knowledge_base(file_path: str) -> dict:
+
+def add_document_to_knowledge_base(case_information: str) -> dict:
     """
     Añade un documento a la base de conocimiento.
     
     Args:
-        file_path: Ruta al archivo (PDF, TXT, MD)
+        case_information: Case information about the case
     
     Returns:
         dict: Resultado de la operación
@@ -134,16 +129,17 @@ def add_document_to_knowledge_base(file_path: str) -> dict:
     
     try:
         # Validación básica
-        if not file_path or not isinstance(file_path, str):
-            return {
-                "success": False,
-                "message": "file_path debe ser una cadena válida",
-                "chunks_added": 0,
-                "processing_time": 0.0
-            }
-        
-        # Extraer texto
-        text = _extract_text(file_path)
+        #if not file_path or not isinstance(file_path, str):
+        #    return {
+        #        "success": False,
+        #        "message": "file_path debe ser una cadena válida",
+        #        "chunks_added": 0,
+        #        "processing_time": 0.0
+        #    }
+        #
+        ## Extraer texto
+        #text = _extract_text(file_path)
+        text = case_information
         if not text:
             return {
                 "success": False,
@@ -203,21 +199,22 @@ def add_document_to_knowledge_base(file_path: str) -> dict:
             "processing_time": round(time.time() - start_time, 2)
         }
 
-@tool
-def query_knowledge_base(query: str, top_k: int = 3) -> dict:
+
+def query_knowledge_base(query: str) -> dict:
     """
     Consulta la base de conocimiento.
     
     Args:
         query: Consulta de texto
-        top_k: Número de resultados a retornar
     
     Returns:
         dict: Resultados de la búsqueda
     """
+    top_k = 2
     start_time = time.time()
     
     try:
+        print("1")
         # Validación básica
         if not query or not isinstance(query, str) or not query.strip():
             return {
@@ -231,18 +228,25 @@ def query_knowledge_base(query: str, top_k: int = 3) -> dict:
         if top_k < 1 or top_k > 20:
             top_k = 3
         
+        print("2")
         # Generar embedding de la consulta
         model = _get_embedding_model()
         query_embedding = model.encode([query.strip()])
         
         # Buscar en la colección
         collection = _get_chroma_collection()
+        print("min(top_k, collection.count())")
+        print(min(top_k, collection.count()))
+        print(top_k)
+        print(collection.count())
+
         results = collection.query(
             query_embeddings=query_embedding.tolist(),
             n_results=min(top_k, collection.count()),
             include=['documents', 'metadatas', 'distances']
         )
         
+        print("3")
         # Formatear resultados
         formatted_results = []
         if results['documents'] and results['documents'][0]:
@@ -258,7 +262,7 @@ def query_knowledge_base(query: str, top_k: int = 3) -> dict:
                     "file_path": metadata.get('file_path', 'unknown'),
                     "chunk_index": metadata.get('chunk_index', 0)
                 })
-        
+        print("4")
         return {
             "success": True,
             "query": query.strip(),
@@ -269,6 +273,8 @@ def query_knowledge_base(query: str, top_k: int = 3) -> dict:
         }
         
     except Exception as e:
+        print("5")
+        print(e)
         return {
             "success": False,
             "query": query.strip() if query else "",
@@ -277,3 +283,7 @@ def query_knowledge_base(query: str, top_k: int = 3) -> dict:
             "processing_time": round(time.time() - start_time, 2),
             "message": f"Error en consulta: {str(e)}"
         }
+
+
+_get_embedding_model()
+_get_chroma_collection()

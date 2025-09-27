@@ -17,22 +17,51 @@ def main():
     print("=== Herramientas RAG Simples para Google ADK ===\n")
     
     # Crear un documento de prueba simple
-    test_content = """# Google ADK
+    test_content = """# 
 
-Google ADK es una plataforma de desarrollo que permite crear aplicaciones con IA.
-
-## Características
-- Autenticación OAuth 2.0
-- APIs de procesamiento de lenguaje natural
-- Herramientas de desarrollo integradas
-- Soporte para múltiples lenguajes de programación
-
-## Configuración
-Para configurar Google ADK, necesitas:
-1. Crear una cuenta de desarrollador
-2. Obtener las credenciales de API
-3. Instalar el SDK
-4. Configurar la autenticación
+Caso de Archivo #1
+ID de Caso: 78B Título del Caso: El Caso del "Lienzo Silencioso" Fecha: 12 de Octubre de
+2008 Estado: Sin Resolver (Caso Frío)
+Resumen del Crimen: Se perpetró un robo en la Galería de Arte Moderno de la ciudad. La
+obra sustraída fue "Noche Estrellada sobre el Río"
+, del aclamado pintor contemporáneo
+Javier Soto, valorada en 3 millones de euros. El robo ocurrió durante la noche, sin que
+sonara ninguna de las alarmas de presión, movimiento o láser.
+Modus Operandi (M.O.): El ladrón demostró un conocimiento técnico extremadamente
+avanzado. Las alarmas fueron neutralizadas mediante un dispositivo que emitía una
+frecuencia sónica específica, descalibrando los sensores temporalmente sin dejar rastro en
+el sistema. El cristal blindado de la vitrina fue cortado con una herramienta de diamante de
+alta precisión, dejando un círculo perfecto. El autor del robo no utilizó la fuerza bruta en
+ningún momento.
+Personas de Interés:
+●
+●
+Sospechoso Principal: Un individuo no identificado conocido por el alias "El
+Maestro"
+. Se cree que es un ladrón de guante blanco con experiencia en sistemas
+de seguridad de alta gama. No se obtuvieron huellas dactilares ni ADN.
+Testigos Clave: Ninguno. El guardia de seguridad de turno no reportó ninguna
+anomalía.
+●
+Víctima: La Galería de Arte Moderno y el coleccionista privado dueño de la obra.
+Evidencia Clave:
+●
+●
+●
+Fragmentos microscópicos de un cristal de cuarzo cerca de la vitrina, posiblemente
+de un emisor sónico personalizado.
+El corte circular en el cristal blindado, que sugiere el uso de una herramienta
+especializada no comercial.
+Registros de seguridad corruptos en un bucle de 30 minutos, justo durante el tiempo
+estimado del robo.
+Análisis Forense: El análisis del cristal de cuarzo no arrojó ninguna coincidencia en las
+bases de datos comerciales. El laboratorio concluyó que el dispositivo emisor fue
+probablemente de fabricación casera y de un diseño único. El análisis del sistema de
+seguridad reveló que la corrupción de los registros se hizo de forma remota, explotando una
+vulnerabilidad de día cero en el firmware del sistema, desconocida hasta la fecha.
+Resolución: El caso sigue sin resolver. La obra de arte nunca fue recuperada y la identidad
+de "El Maestro" permanece como un misterio. El caso es un ejemplo paradigmático de
+robos de alta tecnología.
 """
     
     # Crear archivo temporal
@@ -55,7 +84,7 @@ Para configurar Google ADK, necesitas:
         
         # Ejemplo 2: Consultar la base de conocimiento
         print("2. Consultando base de conocimiento...")
-        result = query_knowledge_base("¿Cómo configurar autenticación en Google ADK?", top_k=2)
+        result = query_knowledge_base("Dame informacion sobre robos")
         
         if result["success"] and result["results"]:
             print(f"✓ Encontrados {result['results_count']} resultados:")

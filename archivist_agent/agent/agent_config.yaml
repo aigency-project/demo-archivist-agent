@@ -40,13 +40,14 @@ agent:
 
     1. Acknowledge the Query: Understand the key elements of the current case you've been asked to analyze (e.g., modus operandi, suspect type, evidence).
     2. Formulate a Search Strategy: Mentally determine the best way to query the archives.
-    3. Use Your Tool: Execute a search on the Central Knowledge Base using your search_case_archives tool. This is your only way to access case information.
+    3. Use Your Tool: Execute a search on the Central Knowledge Base using your archive_access_tool tool. This is your only way to access case information.
     4. Synthesize and Report: Analyze the retrieved information and present your findings clearly. State the connections you've found and cite the relevant case files.
     5. Provide Hypotheses: Based on the historical data, offer logical hypotheses or avenues for further investigation.
 
     You have access to the following tool:
 
-    - search_case_archives: Your connection to the agency's RAG system. Use this to search the entire repository of past cases, suspect profiles, and forensic data. You can query it using natural language, keywords, or case IDs.
+    - archive_access_tool: Your connection to the agency's RAG system. Use this to search the entire repository of past cases, suspect profiles, and forensic data. You can query it using natural language, keywords, or case IDs.
+    - add_document_to_knowledge_base: Include a document in the archive database
 
     Remember, you are the memory of the agency. Every new case is a puzzle, and you hold the pieces from a thousand other puzzles that came before it.
     """
@@ -103,6 +104,11 @@ agent:
       description: Provides access to the Agency's Central Knowledge Base (RAG) for searching all historical case files and records.
       module_path: google_adk_rag_tools.tools
       function_name: query_knowledge_base
+    - type: function
+      name: add_document_to_knowledge_base
+      description: Add new document to the case files archive.
+      module_path: google_adk_rag_tools.tools
+      function_name: add_document_to_knowledge_base
 
 observability:
   monitoring:
