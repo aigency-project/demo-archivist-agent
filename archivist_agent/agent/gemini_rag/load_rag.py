@@ -33,6 +33,26 @@ def load_pdf(file_path: str) -> str:
     doc.close()
     return text
 
+def split_text_by_case(text: str) -> list[str]:
+    """
+    Splits a text string into a list of substrings, with each substring representing a full case.
+    It assumes that each case starts with a line like 'ID de Caso: ...'.
+
+    Parameters:
+    - text (str): The input text containing multiple cases.
+
+    Returns:
+    - list[str]: A list where each element is the text of a complete case.
+    """
+    # Split the text by the case identifier. The pattern uses a positive lookahead
+    # to keep the delimiter ('ID de Caso:') as part of the resulting chunks.
+    chunks = re.split(r'(?=ID de Caso:)', text)
+    
+    # The first element might be empty if the text starts with the delimiter, so we filter it out.
+    # We also strip whitespace from each case text.
+    return [chunk.strip() for chunk in chunks if chunk.strip()] 
+
+
 def split_text(text: str) -> list[str]:
     """
     Splits a text string into a list of non-empty substrings based on paragraphs.
@@ -146,9 +166,9 @@ if __name__ == "__main__":
         logging.info(f"1. Loading PDF: {PDF_FILE_PATH}")
         pdf_text = load_pdf(file_path=PDF_FILE_PATH)
 
-        logging.info("2. Splitting text into chunks...")
-        text_chunks = split_text(text=pdf_text)
-        logging.info(f"   - Found {len(text_chunks)} chunks.")
+        logging.info("2. Splitting text into chunks by case...")
+        text_chunks = split_text_by_case(text=pdf_text)
+        logging.info(f"   - Found {len(text_chunks)} chunks (cases).")
 
         logging.info(f"3. Creating and populating ChromaDB collection '{COLLECTION_NAME}'...")
         file_name = os.path.basename(PDF_FILE_PATH)
