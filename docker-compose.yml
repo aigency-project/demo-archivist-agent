@@ -1,0 +1,31 @@
+
+services:
+  archivist-agent:
+    build:
+      context: ./archivist_agent/agent/gemini_rag
+      dockerfile: Dockerfile
+    container_name: archivist-agent
+    ports:
+      - "8081:8080"
+    env_file:
+      - ./archivist_agent/agent/gemini_rag/.env
+    volumes:
+      - ./archivist_agent/agent/gemini_rag:/app/code/agent
+      - ./archivist_agent/agent/gemini_rag/chroma_db:/app/chroma_db
+    restart: unless-stopped
+    command: >
+      sh -c "pip install watchdog && \
+             watchmedo auto-restart --directory=/app/code --patterns='*.py;*.yaml;*.yml' --recursive -- python /app/code/agent/__main__.py"
+    networks:
+      - agent_network
+
+  a2ainspector:
+    image: a2a-inspector
+    ports:
+      - "6007:8080"
+    networks:
+      - agent_network
+
+networks:
+  agent_network:
+    driver: bridge
