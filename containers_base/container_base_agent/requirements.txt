@@ -1,7 +1,6 @@
 aigency>=0.0.1
 watchdog
 
-
 # Dependencias simples para herramientas RAG de Google ADK
 
 # Procesamiento de documentos
@@ -13,7 +12,13 @@ scipy>=1.11.0
 #torch>=2.1.0
 transformers>=4.35.0
 sentence-transformers>=2.2.2
-
+langchain
+langchain_huggingface
+langchain_community
+langchain-chroma
+llama_index
+llama-index-vector-stores-chroma
+llama-index-embeddings-huggingface
 
 # Base de datos vectorial
 chromadb>=0.4.0
