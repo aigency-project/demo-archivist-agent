@@ -94,24 +94,8 @@ agent:
         - "Generate a report on historical crimes involving corporate espionage at OmniCorp."
 
   tools:
-    #- type: function
-    #  name: archive_access_tool
-    #  description: Provides access to the Agency's Central Knowledge Base (RAG) for searching all historical case files and records.
-    #  module_path: rag_tool
-    #  function_name: retrieve_docs
     - type: function
       name: archive_access_tool
       description: Provides access to the Agency's Central Knowledge Base (RAG) for searching all historical case files and records.
-      module_path: google_adk_rag_tools.tools
-      function_name: query_knowledge_base
-    - type: function
-      name: add_document_to_knowledge_base
-      description: Add new document to the case files archive.
-      module_path: google_adk_rag_tools.tools
-      function_name: add_document_to_knowledge_base
-
-observability:
-  monitoring:
-    phoenix:
-      host: phoenix
-      port: 6006
+      module_path: pdf_loader
+      function_name: query_rag_system_local
