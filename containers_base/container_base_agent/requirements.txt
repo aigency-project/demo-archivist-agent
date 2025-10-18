@@ -1,4 +1,4 @@
-aigency==0.1.1rc139755297
+aigency==0.1.1
 watchdog
 
 # Dependencias simples para herramientas RAG de Google ADK
